@@ -1,14 +1,10 @@
 ## Quads
 
-Computer art based on quadtrees.
-
 The program targets an input image. The input image is split into four quadrants. Each quadrant is assigned an averaged color based on the colors in the input image. The quadrant with the largest error is split into its four children quadrants to refine the image. This process is repeated N times.
 
-### Web Demo
-
-A web-based version can be seen here:
-
-http://www.michaelfogleman.com/static/quads/
+___
+Description
+Image compression is a type of data compression applied to digital images, to reduce their cost for storage or transmission. Algorithms may take advantage of visual perception and the statistical properties of image data to provide superior results compared with generic compression methods.
 
 ### Animation
 
