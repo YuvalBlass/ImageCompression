@@ -3,12 +3,8 @@ from collections import Counter
 import heapq
 import sys
 
-MODE_RECTANGLE = 1
-MODE_ELLIPSE = 2
-MODE_ROUNDED_RECTANGLE = 3
+MODE_RECTANGLE, MODE_ELLIPSE, MODE_ROUNDED_RECTANGLE = 1, 2, 3
 
-MODE = MODE_RECTANGLE
-ITERATIONS = 1024
 LEAF_SIZE = 4
 PADDING = 1
 FILL_COLOR = (0, 0, 0)
@@ -113,33 +109,36 @@ class Model(object):
         for quad in self.root.get_leaf_nodes(max_depth):
             l, t, r, b = quad.box
             box = (l * m + dx, t * m + dy, r * m - 1, b * m - 1)
+            fColor = (int(quad.color[0]), int(quad.color[1]), int(quad.color[2]))
+            MODE = int(sys.argv[1:][2])
             if MODE == MODE_ELLIPSE:
-                draw.ellipse(box, quad.color)
+                draw.ellipse(box, fColor)
             elif MODE == MODE_ROUNDED_RECTANGLE:
                 radius = m * min((r - l), (b - t)) / 4
-                rounded_rectangle(draw, box, radius, quad.color)
+                rounded_rectangle(draw, box, radius, fColor)
             else:
-                print(quad.color)
-                draw.rectangle(box, (int(quad.color[0]), int(quad.color[1]), int(quad.color[2])))
+                draw.rectangle(box, fill=fColor)
         del draw
         im.save(path, 'PNG')
+        return im
 
 def main():
     args = sys.argv[1:]
-    if len(args) != 1:
-        print('Usage: python main.py input_image')
-        return
+    if len(args) != 3:
+        print('Usage: python main.py input_image iterations mode')
     model = Model(args[0])
+    ITERATIONS = int(args[1])
+    # the optinal modes are: [MODE_RECTANGLE, MODE_ELLIPSE, MODE_ROUNDED_RECTANGLE]
     previous = None
     for i in range(ITERATIONS):
         error = model.average_error()
         if previous is None or previous - error > ERROR_RATE:
-            print(i, error)
             if SAVE_FRAMES:
                 model.render('frames/%06d.png' % i)
             previous = error
         model.split()
-    model.render('output.png')
+    im = model.render('output.png')
+    im.show()
     print('-' * 32)
     depth = Counter(x.depth for x in model.quads)
     for key in sorted(depth):
@@ -151,6 +150,9 @@ def main():
     print('             %8d %8.2f%%' % (len(model.quads), 100))
     for max_depth in range(max(depth.keys()) + 1):
         model.render('out%d.png' % max_depth, max_depth)
+    print('\n' + "_" * 32 + '\n')
+    print("Thank you for using our software!")
+    print("_" * 32)
 
 if __name__ == '__main__':
     main()
