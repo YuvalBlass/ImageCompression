@@ -110,7 +110,7 @@ class Model(object):
             l, t, r, b = quad.box
             box = (l * m + dx, t * m + dy, r * m - 1, b * m - 1)
             fColor = (int(quad.color[0]), int(quad.color[1]), int(quad.color[2]))
-            MODE = int(sys.argv[1:][2])
+            # MODE = int(sys.argv[1:][2])
             if MODE == MODE_ELLIPSE:
                 draw.ellipse(box, fColor)
             elif MODE == MODE_ROUNDED_RECTANGLE:
@@ -123,12 +123,17 @@ class Model(object):
         return im
 
 def main():
-    args = sys.argv[1:]
-    if len(args) != 3:
-        print('Usage: python main.py input_image iterations mode')
-    model = Model(args[0])
-    ITERATIONS = int(args[1])
-    # the optinal modes are: [MODE_RECTANGLE, MODE_ELLIPSE, MODE_ROUNDED_RECTANGLE]
+    global MODE
+    model = Model(input('Please drag the image > '))
+    ITERATIONS = int(input('Enter the number of iterations > '))
+    print('the optinal modes are: 0 -> MODE_RECTANGLE, 1 -> MODE_ELLIPSE, 2 -> MODE_ROUNDED_RECTANGLE')
+    MODE = int(input('Please type the desire mode > '))
+    # args = sys.argv[1:]
+    # if len(args) != 3:
+    #     print('Usage: python main.py input_image iterations mode')
+    # model = Model(args[0])
+    # ITERATIONS = int(args[1])
+    # # the optinal modes are: [MODE_RECTANGLE, MODE_ELLIPSE, MODE_ROUNDED_RECTANGLE]
     previous = None
     for i in range(ITERATIONS):
         error = model.average_error()
