@@ -126,7 +126,7 @@ def main():
     global MODE
     model = Model(input('Please drag the image > '))
     ITERATIONS = int(input('Enter the number of iterations > '))
-    print('the optinal modes are: 0 -> MODE_RECTANGLE, 1 -> MODE_ELLIPSE, 2 -> MODE_ROUNDED_RECTANGLE')
+    print('The optinal modes are: 0 -> MODE_RECTANGLE, 1 -> MODE_ELLIPSE, 2 -> MODE_ROUNDED_RECTANGLE')
     MODE = int(input('Please type the desire mode > '))
     # args = sys.argv[1:]
     # if len(args) != 3:
